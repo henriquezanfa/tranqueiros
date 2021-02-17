@@ -1,16 +1,13 @@
-# tranqueiros
+# Tranqueiros
 
-A new Flutter project.
+O desafio ao redor desse aplicativo foi quanto ao tempo: foi desafiado a fazê-lo em uma hora. Não consegui alcançar o objetivo, excedi o tempo em 30 minutos, mas o resultado valeu a pena.
 
-## Getting Started
+Se quiser dar uma olhada no web app (ele foi feito pra mobile, então as dimensões na web ficam estranhas), é só entrar [aqui](http://tranqueiros.s3-website-sa-east-1.amazonaws.com/#/)
 
-This project is a starting point for a Flutter application.
+![image info](./screenshot.jpeg)
 
-A few resources to get you started if this is your first Flutter project:
+## Melhorias
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+Hoje as imagens estão fixas no topo do app (sim, se quiser usar vai ser com minha foto), então acho que um próximo passo é fazer essa alteração e permitir upload de fotos ou fotografar direto pelo app.
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Além disso, não há um histórico de partidas e nenhum tipo de armazenamento local. Se o app fecha, perde os dados, então esse é outro bom ponto para trabalhar em cima.
