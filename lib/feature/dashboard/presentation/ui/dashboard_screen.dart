@@ -46,24 +46,22 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   });
                 })
           ]),
-      body: SingleChildScrollView(
-        child: GestureDetector(
-          onTap: () {
-            FocusScope.of(context).requestFocus(new FocusNode());
-          },
-          child: Container(
-            padding: EdgeInsets.only(top: 16),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: <Widget>[
-                  _buildTopImages(),
-                  _buildPlacarTotal(),
-                  _buildListaPontos(),
-                  _buildEntradaPontos(),
-                  _buildButton(),
-                ],
-              ),
+      body: GestureDetector(
+        onTap: () {
+          FocusScope.of(context).requestFocus(new FocusNode());
+        },
+        child: Container(
+          padding: EdgeInsets.only(top: 16),
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                _buildTopImages(),
+                _buildPlacarTotal(),
+                Expanded(child: _buildListaPontos()),
+                _buildEntradaPontos(),
+                _buildButton(),
+              ],
             ),
           ),
         ),
@@ -159,34 +157,44 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  ListView _buildListaPontos() {
-    return ListView.builder(
-      shrinkWrap: true,
-      itemCount: _placar.length,
-      itemBuilder: (context, index) {
-        return Container(
-          padding: EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              Text(
-                _placar[index].pontuacaoTime1.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+  Widget _buildListaPontos() {
+    return SingleChildScrollView(
+      child: ListView.separated(
+        separatorBuilder: (context, position) {
+          return Container(
+            height: 0.5,
+            width: double.infinity,
+            color: verdeEscuro,
+          );
+        },
+        shrinkWrap: true,
+        physics: BouncingScrollPhysics(),
+        itemCount: _placar.length,
+        itemBuilder: (context, index) {
+          return Container(
+            padding: EdgeInsets.all(16),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  _placar[index].pontuacaoTime1.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-              Text(
-                _placar[index].pontuacaoTime2.toString(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 18,
+                Text(
+                  _placar[index].pontuacaoTime2.toString(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                  ),
                 ),
-              ),
-            ],
-          ),
-        );
-      },
+              ],
+            ),
+          );
+        },
+      ),
     );
   }
 
@@ -194,19 +202,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
     return Container(
       padding: EdgeInsets.all(16),
       child: Card(
-          color: vinho,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(sum1(),
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
-                Text(sum2(),
-                    style: TextStyle(fontSize: 18, color: Colors.white)),
-              ],
-            ),
-          )),
+        color: vinho,
+        child: Container(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Text(sum1(), style: TextStyle(fontSize: 18, color: Colors.white)),
+              Text(sum2(), style: TextStyle(fontSize: 18, color: Colors.white)),
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -294,6 +301,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ));
       _controller1.text = "";
       _controller2.text = "";
+      FocusScope.of(context).requestFocus(new FocusNode());
     });
   }
 }
