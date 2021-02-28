@@ -112,7 +112,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: TextFormField(
                 controller: _controller1,
                 textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: false,
+                  signed: true,
+                ),
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -136,7 +139,10 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: TextFormField(
                 controller: _controller2,
                 textAlign: TextAlign.center,
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType.numberWithOptions(
+                  decimal: false,
+                  signed: true,
+                ),
                 style: TextStyle(
                   color: Colors.white,
                 ),
@@ -184,7 +190,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Container _buildPlacarTotal() {
+  Widget _buildPlacarTotal() {
     return Container(
       padding: EdgeInsets.all(16),
       child: Card(
