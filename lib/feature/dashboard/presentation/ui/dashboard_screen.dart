@@ -1,8 +1,14 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:tranqueiros/core/consts.dart';
 import 'package:tranqueiros/feature/dashboard/data/placar_model.dart';
+
+import '../../../../core/consts.dart';
 
 class DashboardScreen extends StatefulWidget {
   DashboardScreen({Key key, this.title}) : super(key: key);
@@ -18,10 +24,15 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   TimeModel time1 = TimeModel(nome1: "Marina", nome2: "KIK");
   TimeModel time2 = TimeModel(nome1: "Bia", nome2: "Miguel");
-  List<PlacarModel> _placar = List();
+  List<PlacarModel> _placar = [];
 
   TextEditingController _controller1 = TextEditingController();
   TextEditingController _controller2 = TextEditingController();
+
+  File image1;
+  File image2;
+  File image3;
+  File image4;
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +53,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                 ),
                 onTap: () {
                   setState(() {
-                    _placar = List();
+                    _placar = [];
                   });
                 })
           ]),
@@ -223,25 +234,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Row(children: [
-            Container(
-                width: _imgSize,
-                height: _imgSize,
-                decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/img/pessoa_1.jpg")))),
-            SizedBox(width: 4),
-            Container(
-                width: _imgSize,
-                height: _imgSize,
-                decoration: new BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: new DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage("assets/img/pessoa_2.jpeg")))),
-          ]),
+          Row(
+            children: [
+              buildFoto(
+                image1,
+                () async {
+                  image1 = await _showPicker(context);
+                  setState(() {});
+                },
+              ),
+              SizedBox(width: 4),
+              buildFoto(
+                image2,
+                () async {
+                  image2 = await _showPicker(context);
+                  setState(() {});
+                },
+              ),
+            ],
+          ),
           Text("VS",
               style: TextStyle(
                 color: Colors.white,
@@ -249,28 +260,121 @@ class _DashboardScreenState extends State<DashboardScreen> {
               )),
           Row(
             children: [
-              Container(
-                  width: _imgSize,
-                  height: _imgSize,
-                  decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: new DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/img/pessoa_3.jpg")))),
+              buildFoto(
+                image3,
+                () async {
+                  image3 = await _showPicker(context);
+                  setState(() {});
+                },
+              ),
               SizedBox(width: 4),
-              Container(
-                  width: _imgSize,
-                  height: _imgSize,
-                  decoration: new BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: new DecorationImage(
-                          fit: BoxFit.cover,
-                          image: AssetImage("assets/img/pessoa_4.jpg")))),
+              buildFoto(
+                image4,
+                () async {
+                  image4 = await _showPicker(context);
+                  setState(() {});
+                },
+              ),
             ],
           )
         ],
       ),
     );
+  }
+
+  GestureDetector buildFoto(File image, Function onTap) {
+    return GestureDetector(
+      onTap: onTap,
+      child: image != null
+          ? ClipRRect(
+              borderRadius: BorderRadius.circular(_imgSize),
+              child: Container(
+                  width: _imgSize,
+                  height: _imgSize,
+                  child: Image.file(image, fit: BoxFit.cover)),
+            )
+          : Stack(
+              children: [
+                Icon(
+                  Icons.account_circle_rounded,
+                  size: 85,
+                  color: verdeEscuro,
+                ),
+                Positioned(
+                  top: 8,
+                  right: 8,
+                  child: Icon(
+                    Icons.add_a_photo,
+                    size: 20,
+                    color: Colors.black38,
+                  ),
+                ),
+              ],
+            ),
+    );
+  }
+
+  Future<File> _showPicker(context) async {
+    return showModalBottomSheet(
+        context: context,
+        builder: (BuildContext bc) {
+          return SafeArea(
+            child: Container(
+              child: Wrap(
+                children: <Widget>[
+                  ListTile(
+                      leading: Icon(Icons.photo_library),
+                      title: Text('Galeria'),
+                      onTap: () async {
+                        final image = await _getFromGallery();
+                        Navigator.of(context).pop(image);
+                      }),
+                  ListTile(
+                    leading: Icon(Icons.photo_camera),
+                    title: Text('Câmera'),
+                    onTap: () async {
+                      final image = await _getFromCamera();
+                      Navigator.of(context).pop(image);
+                    },
+                  ),
+                  ListTile(
+                    leading: Icon(Icons.delete),
+                    title: Text('Remover foto'),
+                    onTap: () async {
+                      Navigator.of(context).pop(null);
+                    },
+                  ),
+                ],
+              ),
+            ),
+          );
+        });
+  }
+
+  Future<File> _getFromCamera() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile image = await _picker.pickImage(source: ImageSource.camera);
+
+    return _cropImage(image.path);
+  }
+
+  Future<File> _getFromGallery() async {
+    final ImagePicker _picker = ImagePicker();
+    final XFile image = await _picker.pickImage(source: ImageSource.gallery);
+
+    return _cropImage(image.path);
+  }
+
+  Future<File> _cropImage(filePath) async {
+    File croppedImage = await ImageCropper.cropImage(
+      sourcePath: filePath,
+      maxWidth: 1080,
+      maxHeight: 1080,
+      aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
+      cropStyle: CropStyle.circle,
+    );
+
+    return croppedImage;
   }
 
   String sum1() {
@@ -301,7 +405,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ));
       _controller1.text = "";
       _controller2.text = "";
-      FocusScope.of(context).requestFocus(new FocusNode());
+      FocusScope.of(context).requestFocus(FocusNode());
     });
   }
 }

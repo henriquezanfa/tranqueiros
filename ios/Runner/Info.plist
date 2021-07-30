@@ -26,6 +26,10 @@
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Tranqueiros requer acessos à sua galeria para alterar a foto dos jogadores.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Tranqueiros requer acessos à sua câmera para tirar fotos dos jogadores.</string>
 	<key>UISupportedInterfaceOrientations</key>
 	<array>
 		<string>UIInterfaceOrientationPortrait</string>
