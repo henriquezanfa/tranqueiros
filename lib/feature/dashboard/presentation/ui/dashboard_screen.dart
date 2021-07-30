@@ -80,27 +80,29 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Container _buildButton() {
-    return Container(
-      padding: EdgeInsets.only(left: 16, bottom: 16, right: 16),
-      child: ButtonTheme(
-        buttonColor: vinho,
-        minWidth: double.infinity,
-        child: RaisedButton.icon(
-          label: Text(
-            "Adicionar",
-            style: TextStyle(
+  Widget _buildButton() {
+    return SafeArea(
+      child: Container(
+        padding: EdgeInsets.only(left: 16, bottom: 16, right: 16),
+        child: ButtonTheme(
+          buttonColor: vinho,
+          minWidth: double.infinity,
+          child: RaisedButton.icon(
+            label: Text(
+              "Adicionar",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            icon: Icon(
+              Icons.add,
               color: Colors.white,
             ),
-          ),
-          icon: Icon(
-            Icons.add,
-            color: Colors.white,
-          ),
-          padding: EdgeInsets.symmetric(vertical: 16),
-          onPressed: onPressed,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(18.0),
+            padding: EdgeInsets.symmetric(vertical: 16),
+            onPressed: onPressed,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            ),
           ),
         ),
       ),
@@ -396,10 +398,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   void onPressed() {
+    int value1 = int.tryParse(_controller1.text) ?? 0;
+    int value2 = int.tryParse(_controller2.text) ?? 0;
+
     setState(() {
       _placar.add(PlacarModel(
-        pontuacaoTime1: int.parse(_controller1.text),
-        pontuacaoTime2: int.parse(_controller2.text),
+        pontuacaoTime1: value1,
+        pontuacaoTime2: value2,
         time1: time1,
         time2: time2,
       ));
