@@ -1,4 +1,4 @@
-package com.example.tranqueiros
+package br.com.tranqueiros
 
 import io.flutter.embedding.android.FlutterActivity
 

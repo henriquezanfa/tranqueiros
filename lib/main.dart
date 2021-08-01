@@ -13,6 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Tranqueiros',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         accentColor: vinho,
         primaryColor: verde,
