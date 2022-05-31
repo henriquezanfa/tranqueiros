@@ -5,13 +5,12 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tranqueiros/core/consts.dart';
 import 'package:tranqueiros/feature/dashboard/data/placar_model.dart';
 
-import '../../../../core/consts.dart';
-
 class DashboardScreen extends StatefulWidget {
-  DashboardScreen({Key key, this.title}) : super(key: key);
+  const DashboardScreen({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -20,22 +19,22 @@ class DashboardScreen extends StatefulWidget {
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {
-  double _imgSize = 70;
+  final double _imgSize = 70;
 
-  TimeModel time1 = TimeModel(nome1: "Marina", nome2: "KIK");
-  TimeModel time2 = TimeModel(nome1: "Bia", nome2: "Miguel");
+  TimeModel time1 = TimeModel(nome1: 'Marina', nome2: 'KIK');
+  TimeModel time2 = TimeModel(nome1: 'Bia', nome2: 'Miguel');
   List<PlacarModel> _placar = [];
 
-  TextEditingController _controller1 = TextEditingController();
-  TextEditingController _controller2 = TextEditingController();
+  final TextEditingController _controller1 = TextEditingController();
+  final TextEditingController _controller2 = TextEditingController();
 
-  File image1;
-  File image2;
-  File image3;
-  File image4;
+  File? image1;
+  File? image2;
+  File? image3;
+  File? image4;
 
   final cropKey = GlobalKey<CropState>();
-  File _sample;
+  File? _sample;
 
   @override
   Widget build(BuildContext context) {
@@ -48,27 +47,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           title: Text(widget.title, style: GoogleFonts.montserrat()),
           actions: [
             InkWell(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16),
-                  child: Icon(
-                    Icons.delete_outline,
-                  ),
+              onTap: () {
+                setState(() {
+                  _placar = [];
+                });
+              },
+              child: Container(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: const Icon(
+                  Icons.delete_outline,
                 ),
-                onTap: () {
-                  setState(() {
-                    _placar = [];
-                  });
-                })
+              ),
+            ),
           ]),
       body: GestureDetector(
         onTap: () {
-          FocusScope.of(context).requestFocus(new FocusNode());
+          FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Container(
-          padding: EdgeInsets.only(top: 16),
+          padding: const EdgeInsets.only(top: 16),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
                 _buildTopImages(),
                 _buildPlacarTotal(),
@@ -86,25 +85,25 @@ class _DashboardScreenState extends State<DashboardScreen> {
   Widget _buildButton() {
     return SafeArea(
       child: Container(
-        padding: EdgeInsets.only(left: 16, bottom: 16, right: 16),
+        padding: const EdgeInsets.only(left: 16, bottom: 16, right: 16),
         child: ButtonTheme(
           buttonColor: vinho,
           minWidth: double.infinity,
           child: RaisedButton.icon(
-            label: Text(
-              "Adicionar",
+            label: const Text(
+              'Adicionar',
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-            icon: Icon(
+            icon: const Icon(
               Icons.add,
               color: Colors.white,
             ),
-            padding: EdgeInsets.symmetric(vertical: 16),
+            padding: const EdgeInsets.symmetric(vertical: 16),
             onPressed: onPressed,
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
+              borderRadius: BorderRadius.circular(18),
             ),
           ),
         ),
@@ -114,7 +113,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Container _buildEntradaPontos() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Row(
         children: [
           Expanded(
@@ -126,14 +125,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: TextFormField(
                 controller: _controller1,
                 textAlign: TextAlign.center,
-                keyboardType: TextInputType.numberWithOptions(
-                  decimal: false,
+                keyboardType: const TextInputType.numberWithOptions(
                   signed: true,
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 16),
                   hintText: '',
                   border: InputBorder.none,
@@ -141,7 +139,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             width: 4,
           ),
           Expanded(
@@ -153,14 +151,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
               child: TextFormField(
                 controller: _controller2,
                 textAlign: TextAlign.center,
-                keyboardType: TextInputType.numberWithOptions(
-                  decimal: false,
+                keyboardType: const TextInputType.numberWithOptions(
                   signed: true,
                 ),
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.white,
                 ),
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintStyle: TextStyle(fontSize: 16),
                   hintText: '',
                   border: InputBorder.none,
@@ -184,24 +181,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
           );
         },
         shrinkWrap: true,
-        physics: BouncingScrollPhysics(),
+        physics: const BouncingScrollPhysics(),
         itemCount: _placar.length,
         itemBuilder: (context, index) {
           return Container(
-            padding: EdgeInsets.all(16),
+            padding: const EdgeInsets.all(16),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Text(
                   _placar[index].pontuacaoTime1.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
                 ),
                 Text(
                   _placar[index].pontuacaoTime2.toString(),
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontSize: 18,
                   ),
@@ -216,16 +213,18 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Widget _buildPlacarTotal() {
     return Container(
-      padding: EdgeInsets.all(16),
+      padding: const EdgeInsets.all(16),
       child: Card(
         color: vinho,
         child: Container(
-          padding: EdgeInsets.symmetric(vertical: 16),
+          padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              Text(sum1(), style: TextStyle(fontSize: 18, color: Colors.white)),
-              Text(sum2(), style: TextStyle(fontSize: 18, color: Colors.white)),
+              Text(sum1(),
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
+              Text(sum2(),
+                  style: const TextStyle(fontSize: 18, color: Colors.white)),
             ],
           ),
         ),
@@ -235,7 +234,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
 
   Container _buildTopImages() {
     return Container(
-      padding: EdgeInsets.all(8),
+      padding: const EdgeInsets.all(8),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
@@ -244,12 +243,24 @@ class _DashboardScreenState extends State<DashboardScreen> {
               buildFoto(
                 image1,
                 () async {
-                  image1 = await _showPicker(context);
-                  _buildCroppingImage();
-                  setState(() {});
+                  final aux = await _showPicker(context).then((value) {
+                    if (value != null) {
+                      if (_sample != null) {
+                        return showCupertinoModalBottomSheet<File?>(
+                          enableDrag: false,
+                          context: context,
+                          builder: (_) => _buildCroppingImage(),
+                        );
+                      }
+                    }
+                  });
+                  if (aux != null) {
+                    image1 = aux as File?;
+                    setState(() {});
+                  }
                 },
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               buildFoto(
                 image2,
                 () async {
@@ -259,7 +270,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
               ),
             ],
           ),
-          Text("VS",
+          const Text('VS',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 16,
@@ -273,7 +284,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   setState(() {});
                 },
               ),
-              SizedBox(width: 4),
+              const SizedBox(width: 4),
               buildFoto(
                 image4,
                 () async {
@@ -288,13 +299,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  GestureDetector buildFoto(File image, Function onTap) {
+  GestureDetector buildFoto(File? image, void Function()? onTap) {
     return GestureDetector(
       onTap: onTap,
       child: image != null
           ? ClipRRect(
               borderRadius: BorderRadius.circular(_imgSize),
-              child: Container(
+              child: SizedBox(
                   width: _imgSize,
                   height: _imgSize,
                   child: Image.file(image, fit: BoxFit.cover)),
@@ -306,7 +317,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   size: 85,
                   color: verdeEscuro,
                 ),
-                Positioned(
+                const Positioned(
                   top: 8,
                   right: 8,
                   child: Icon(
@@ -320,89 +331,57 @@ class _DashboardScreenState extends State<DashboardScreen> {
     );
   }
 
-  Future<File> _showPicker(context) async {
-    return showModalBottomSheet(
+  Future<File?> _showPicker(BuildContext context) async {
+    return showModalBottomSheet<File?>(
         context: context,
-        builder: (BuildContext bc) {
+        isScrollControlled: false,
+        builder: (BuildContext context) {
           return SafeArea(
-            child: Container(
-              child: Wrap(
-                children: <Widget>[
-                  _sample != null ? Expanded(
-                    child: Crop.file(_sample, key: cropKey),
-                  ) : Offstage(),
-                  ListTile(
-                      leading: Icon(Icons.photo_library),
-                      title: Text('Galeria'),
-                      onTap: () async {
-                        final image = await _getFromGallery();
-                        Navigator.of(context).pop(image);
-                      }),
-                  ListTile(
-                    leading: Icon(Icons.photo_camera),
-                    title: Text('Câmera'),
+            child: Wrap(
+              children: <Widget>[
+                ListTile(
+                    leading: const Icon(Icons.photo_library),
+                    title: const Text('Galeria'),
                     onTap: () async {
-                      final image = await _getFromCamera();
+                      final image = await _pickFile(ImageSource.gallery);
+                      _sample = image;
                       Navigator.of(context).pop(image);
-                    },
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.delete),
-                    title: Text('Remover foto'),
-                    onTap: () async {
-                      Navigator.of(context).pop(null);
-                    },
-                  ),
-                ],
-              ),
+                    }),
+                ListTile(
+                  leading: const Icon(Icons.photo_camera),
+                  title: const Text('Câmera'),
+                  onTap: () async {
+                    final image = await _getFromCamera();
+                    await _cropImage();
+
+                    Navigator.of(context).pop(image);
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.delete),
+                  title: const Text('Remover foto'),
+                  onTap: () async {
+                    Navigator.of(context).pop(null);
+                  },
+                ),
+              ],
             ),
           );
         });
   }
 
-
-  Widget _buildCroppingImage() {
-    return Column(
-      children: <Widget>[
-        Expanded(
-          child: Crop.file(_sample, key: cropKey),
-        ),
-        Container(
-          padding: const EdgeInsets.only(top: 20.0),
-          alignment: AlignmentDirectional.center,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: <Widget>[
-              TextButton(
-                child: Text(
-                  'Crop Image',
-                  style: Theme.of(context)
-                      .textTheme
-                      .button
-                      .copyWith(color: Colors.white),
-                ),
-                onPressed: () {},
-              ),
-              // _buildOpenImage(),
-            ],
-          ),
-        )
-      ],
-    );
-  }
-
-  Future _cropImage(File _file) async {
-    final scale = cropKey.currentState.scale;
-    final area = cropKey.currentState.area;
+  Future<File?> _cropImage() async {
+    final scale = cropKey.currentState?.scale ?? 1;
+    final area = cropKey.currentState?.area;
     if (area == null) {
       // cannot crop, widget is not setup
-      return;
+      return null;
     }
 
     // scale up to use maximum possible number of pixels
     // this will sample image in higher resolution to make cropped image larger
     final sample = await ImageCrop.sampleImage(
-      file: _file,
+      file: _sample!,
       preferredSize: (2000 / scale).round(),
     );
 
@@ -411,63 +390,109 @@ class _DashboardScreenState extends State<DashboardScreen> {
       area: area,
     );
 
-    sample.delete();
-
-    // _lastCropped?.delete();
-    // _lastCropped = file;
-
-    debugPrint('$file');
+    return _sample = file;
   }
 
-
-
-  Future<File> _getFromCamera() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile image = await _picker.pickImage(source: ImageSource.camera);
-
-    return _cropImage(File(image.path));
+  Widget _buildCroppingImage() {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        automaticallyImplyLeading: false,
+        leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: const Icon(Icons.close_rounded)),
+        title: Text(
+          'Cortar'.toUpperCase(),
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+        ),
+        centerTitle: true,
+        actions: [
+          GestureDetector(
+            onTap: () => Navigator.of(context).pop(_cropImage()),
+            child: const Icon(Icons.check),
+          ),
+          const SizedBox(width: 20),
+        ],
+      ),
+      body: Container(
+        color: Colors.black,
+        child: Expanded(
+          child: Crop.file(
+            _sample!,
+            key: cropKey,
+            aspectRatio: 1.0 / 1.0,
+          ),
+        ),
+      ),
+    );
   }
 
-  Future<File> _getFromGallery() async {
-    final ImagePicker _picker = ImagePicker();
-    final XFile image = await _picker.pickImage(source: ImageSource.gallery);
+  Future<XFile?> _getFromCamera() async {
+    final _picker = ImagePicker();
+    final image = await _picker.pickImage(source: ImageSource.camera);
 
-    return _cropImage(File(image.path));
+    return image;
   }
-  //
-  // Future<File> _cropImage(File filePath) async {
-  //   File croppedImage = await ImageCrop.sampleImage(
-  //     file: filePath,
-  //     // maxWidth: 1080,
-  //     // maxHeight: 1080,
-  //     // aspectRatio: CropAspectRatio(ratioX: 1.0, ratioY: 1.0),
-  //     // cropStyle: CropStyle.circle,
-  //   );
-  //
-  //   return croppedImage;
-  // }
 
   String sum1() {
-    int some = 0;
-    _placar.forEach((element) {
-      some += element.pontuacaoTime1;
-    });
+    var some = 0;
+    for (final element in _placar) {
+      some += element.pontuacaoTime1!;
+    }
 
     return some.toString();
   }
 
   String sum2() {
-    int some = 0;
-    _placar.forEach((element) {
-      some += element.pontuacaoTime2;
-    });
+    var some = 0;
+    for (final element in _placar) {
+      some += element.pontuacaoTime2!;
+    }
 
     return some.toString();
   }
 
+  Future<List<File>?> openFileExplorer(ImageSource imageSource) async {
+    try {
+      final imagePicker = ImagePicker();
+      final xImages = [
+        await imagePicker.pickImage(
+          source: imageSource,
+          imageQuality: 1,
+        )
+      ];
+
+      if (xImages.isNotEmpty) {
+        final images = xImages.map((e) => File(e!.path)).toList();
+        return images;
+      } else {
+        debugPrint('O usuário não selecionou nenhuma imagem');
+      }
+    } on PlatformException catch (e) {
+      debugPrint('Unsupported operation $e');
+      return null;
+    } catch (ex) {
+      debugPrint(ex.toString());
+      return null;
+    }
+  }
+
+  Future<File?> _pickFile(ImageSource? imageSource) async {
+    try {
+      if (imageSource != null) {
+        return await openFileExplorer(imageSource).then((value) {
+          if (!mounted || value == null) return null;
+          return value[0];
+        });
+      }
+    } catch (ex) {
+      debugPrint(ex.toString());
+    }
+  }
+
   void onPressed() {
-    int value1 = int.tryParse(_controller1.text) ?? 0;
-    int value2 = int.tryParse(_controller2.text) ?? 0;
+    final value1 = int.tryParse(_controller1.text) ?? 0;
+    final value2 = int.tryParse(_controller2.text) ?? 0;
 
     setState(() {
       _placar.add(PlacarModel(
@@ -476,8 +501,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
         time1: time1,
         time2: time2,
       ));
-      _controller1.text = "";
-      _controller2.text = "";
+      _controller1.text = '';
+      _controller2.text = '';
       FocusScope.of(context).requestFocus(FocusNode());
     });
   }
