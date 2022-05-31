@@ -26,9 +26,3 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
-
-  assets:
-    - assets/img/pessoa_1.jpg
-    - assets/img/pessoa_2.jpeg
-    - assets/img/pessoa_3.jpg
-    - assets/img/pessoa_4.jpg
