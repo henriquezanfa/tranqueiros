@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tranqueiros/core/consts.dart';
+import 'package:tranqueiros/core/core.dart';
 
 /// The home screen.
 class HomeScreen extends StatelessWidget {
@@ -50,7 +50,7 @@ class _HomeHeaderWidget extends StatelessWidget {
               width: MediaQuery.of(context).size.width,
               height: 280,
               decoration: BoxDecoration(
-                color: verdeEscuro,
+                color: TranqueirosAppTheme.colors.secondary,
               ),
             ),
           ),
@@ -58,9 +58,12 @@ class _HomeHeaderWidget extends StatelessWidget {
             top: 100,
             left: 20,
             right: 20,
-            child: Padding(
-              padding: const EdgeInsets.all(30),
-              child: Image.asset('assets/icon.png'),
+            child: Hero(
+              tag: 'logo-key',
+              child: Padding(
+                padding: const EdgeInsets.all(30),
+                child: Image.asset('assets/icon.png'),
+              ),
             ),
           ),
         ],

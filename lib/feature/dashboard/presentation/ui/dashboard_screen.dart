@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tranqueiros/core/consts.dart';
+import 'package:tranqueiros/core/core.dart';
 import 'package:tranqueiros/feature/dashboard/domain/domain.dart';
 import 'package:tranqueiros/feature/dashboard/presentation/ui/widgets/widgets.dart';
 
@@ -37,9 +37,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: verde,
+      backgroundColor: TranqueirosAppTheme.colors.primary,
       appBar: AppBar(
-        backgroundColor: verdeEscuro,
+        backgroundColor: TranqueirosAppTheme.colors.secondary,
         elevation: 4,
         automaticallyImplyLeading: false,
         centerTitle: true,

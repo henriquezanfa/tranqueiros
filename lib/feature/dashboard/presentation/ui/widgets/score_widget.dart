@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tranqueiros/core/consts.dart';
+import 'package:tranqueiros/core/core.dart';
 
 /// The score of each team.
 class ScoreWidget extends StatelessWidget {
@@ -21,7 +21,7 @@ class ScoreWidget extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       child: Card(
-        color: vinho,
+        color: TranqueirosAppTheme.colors.accent,
         child: Container(
           padding: const EdgeInsets.symmetric(vertical: 16),
           child: Row(

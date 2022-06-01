@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:image_crop/image_crop.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
-import 'package:tranqueiros/core/consts.dart';
+import 'package:tranqueiros/core/core.dart';
 
 const double _imgSize = 70;
 
@@ -121,7 +121,7 @@ class _PhotoWidgetState extends State<PhotoWidget> {
                 Icon(
                   Icons.account_circle_rounded,
                   size: 85,
-                  color: verdeEscuro,
+                  color: TranqueirosAppTheme.colors.secondary,
                 ),
                 const Positioned(
                   top: 8,

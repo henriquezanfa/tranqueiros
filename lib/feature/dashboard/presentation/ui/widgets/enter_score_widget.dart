@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:tranqueiros/core/consts.dart';
+import 'package:tranqueiros/core/core.dart';
 
 /// Input texts for the scores.
 class EnterScoreWidget extends StatelessWidget {
@@ -26,7 +26,7 @@ class EnterScoreWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: verdeEscuro,
+                color: TranqueirosAppTheme.colors.secondary,
                 borderRadius: BorderRadius.circular(32),
               ),
               child: TextFormField(
@@ -55,7 +55,7 @@ class EnterScoreWidget extends StatelessWidget {
           Expanded(
             child: Container(
               decoration: BoxDecoration(
-                color: verdeEscuro,
+                color: TranqueirosAppTheme.colors.secondary,
                 borderRadius: BorderRadius.circular(32),
               ),
               child: TextFormField(

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tranqueiros/core/consts.dart';
+import 'package:tranqueiros/core/core.dart';
 import 'package:tranqueiros/feature/dashboard/domain/domain.dart';
 
 /// List with every round.
@@ -20,7 +20,7 @@ class RoundScoreListWidget extends StatelessWidget {
         return Container(
           height: 0.5,
           width: double.infinity,
-          color: verdeEscuro,
+          color: TranqueirosAppTheme.colors.secondary,
         );
       },
       shrinkWrap: true,
