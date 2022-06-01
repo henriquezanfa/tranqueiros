@@ -7,7 +7,10 @@ import 'package:tranqueiros/feature/dashboard/presentation/ui/widgets/widgets.da
 /// Dashbard screen.
 class DashboardScreen extends StatefulWidget {
   /// Dashbard screen constructor.
-  const DashboardScreen({Key? key, required this.title}) : super(key: key);
+  const DashboardScreen({
+    Key? key,
+    this.title = 'Tranqueiros',
+  }) : super(key: key);
 
   /// The title of the page.
   final String title;
@@ -38,6 +41,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
       appBar: AppBar(
         backgroundColor: verdeEscuro,
         elevation: 4,
+        automaticallyImplyLeading: false,
         centerTitle: true,
         title: Text(widget.title, style: GoogleFonts.montserrat()),
         actions: [

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:tranqueiros/core/consts.dart';
 
 /// The add score button.
 class AddScoreButtonWidget extends StatelessWidget {
@@ -26,25 +25,8 @@ class AddScoreButtonWidget extends StatelessWidget {
                 color: Colors.white,
               ),
             ),
-            icon: const Icon(
-              Icons.add,
-              color: Colors.white,
-            ),
-            style: ButtonStyle(
-              backgroundColor: MaterialStateProperty.all(vinho),
-              shape: MaterialStateProperty.all(
-                RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(50),
-                ),
-              ),
-              padding: MaterialStateProperty.all(
-                const EdgeInsets.symmetric(vertical: 10),
-              ),
-            ),
+            icon: const Icon(Icons.add, color: Colors.white),
             onPressed: onPressed,
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(18),
-            // ),
           ),
         ),
       ),
