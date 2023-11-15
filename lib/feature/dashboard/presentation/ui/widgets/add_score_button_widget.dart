@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 class AddScoreButtonWidget extends StatelessWidget {
   /// The add score button constructor.
   const AddScoreButtonWidget({
-    Key? key,
+    super.key,
     this.onPressed,
-  }) : super(key: key);
+  });
 
   /// The onPressed callback.
   final VoidCallback? onPressed;

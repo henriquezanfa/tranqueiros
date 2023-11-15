@@ -4,19 +4,19 @@ import 'package:tranqueiros/core/core.dart';
 import 'package:tranqueiros/feature/dashboard/domain/domain.dart';
 import 'package:tranqueiros/feature/dashboard/presentation/ui/widgets/widgets.dart';
 
-/// Dashbard screen.
+/// Dashboard screen.
 class DashboardScreen extends StatefulWidget {
-  /// Dashbard screen constructor.
+  /// Dashboard screen constructor.
   const DashboardScreen({
-    Key? key,
+    super.key,
     this.title = 'Tranqueiros',
-  }) : super(key: key);
+  });
 
   /// The title of the page.
   final String title;
 
   @override
-  _DashboardScreenState createState() => _DashboardScreenState();
+  State<DashboardScreen> createState() => _DashboardScreenState();
 }
 
 class _DashboardScreenState extends State<DashboardScreen> {

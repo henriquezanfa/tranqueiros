@@ -5,10 +5,10 @@ import 'package:tranqueiros/core/core.dart';
 class ScoreWidget extends StatelessWidget {
   /// The score of each team constructor
   const ScoreWidget({
-    Key? key,
     required this.firstTeamScore,
     required this.secondTeamScore,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The first team score.
   final int firstTeamScore;

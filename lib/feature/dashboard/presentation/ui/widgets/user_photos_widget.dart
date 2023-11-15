@@ -2,9 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:image_crop/image_crop.dart';
+import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:tranqueiros/core/core.dart';
 
 const double _imgSize = 70;
@@ -12,10 +11,10 @@ const double _imgSize = 70;
 /// Widget with the players photos.
 class UserPhotosWidget extends StatefulWidget {
   /// Widget with the players photos constructor.
-  const UserPhotosWidget({Key? key}) : super(key: key);
+  const UserPhotosWidget({super.key});
 
   @override
-  _UserPhotosWidgetState createState() => _UserPhotosWidgetState();
+  State<UserPhotosWidget> createState() => _UserPhotosWidgetState();
 }
 
 class _UserPhotosWidgetState extends State<UserPhotosWidget> {
@@ -23,9 +22,9 @@ class _UserPhotosWidgetState extends State<UserPhotosWidget> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(8),
-      child: Row(
+      child: const Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: const [
+        children: [
           DuoPlayersWidget(),
           VersusWidget(),
           DuoPlayersWidget(),
@@ -38,7 +37,7 @@ class _UserPhotosWidgetState extends State<UserPhotosWidget> {
 /// The widget with 'VS' text;
 class VersusWidget extends StatelessWidget {
   /// The widget with 'VS' text constructor
-  const VersusWidget({Key? key}) : super(key: key);
+  const VersusWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -55,12 +54,12 @@ class VersusWidget extends StatelessWidget {
 /// The widget with each players duo.
 class DuoPlayersWidget extends StatelessWidget {
   /// The widget with each players duo constructor.
-  const DuoPlayersWidget({Key? key}) : super(key: key);
+  const DuoPlayersWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: const [
+    return const Row(
+      children: [
         PhotoWidget(),
         SizedBox(width: 4),
         PhotoWidget(),
@@ -73,37 +72,27 @@ class DuoPlayersWidget extends StatelessWidget {
 class PhotoWidget extends StatefulWidget {
   /// The player constructor.
   const PhotoWidget({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
-  _PhotoWidgetState createState() => _PhotoWidgetState();
+  State<PhotoWidget> createState() => _PhotoWidgetState();
 }
 
 class _PhotoWidgetState extends State<PhotoWidget> {
   File? _image;
-  File? _sample;
-
-  final cropKey = GlobalKey<CropState>();
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        _showPicker(context).then((value) {
+        _showPicker(context).then((value) async {
           if (value != null) {
-            if (_sample != null) {
-              showCupertinoModalBottomSheet<File?>(
-                enableDrag: false,
-                context: context,
-                builder: (_) => _buildCroppingImage(),
-              ).then((Object? value) {
-                if (value != null) {
-                  _image = value as File?;
-                  setState(() {});
-                }
-              });
-            }
+            final croppedFile = await _cropImage(File(value.path));
+
+            setState(() {
+              _image = File(croppedFile!.path);
+            });
           }
         });
       },
@@ -140,7 +129,6 @@ class _PhotoWidgetState extends State<PhotoWidget> {
   Future<File?> _showPicker(BuildContext context) async {
     return showModalBottomSheet<File?>(
       context: context,
-      isScrollControlled: false,
       builder: (BuildContext context) {
         return SafeArea(
           child: Wrap(
@@ -150,8 +138,7 @@ class _PhotoWidgetState extends State<PhotoWidget> {
                 title: const Text('Galeria'),
                 onTap: () async {
                   final image = await _pickFile(ImageSource.gallery);
-                  _sample = image;
-                  Navigator.of(context).pop(image);
+                  if (mounted) Navigator.of(context).pop(image);
                 },
               ),
               ListTile(
@@ -159,9 +146,9 @@ class _PhotoWidgetState extends State<PhotoWidget> {
                 title: const Text('Câmera'),
                 onTap: () async {
                   final image = await _getFromCamera();
-                  await _cropImage();
+                  final croppedFile = await _cropImage(File(image!.path));
 
-                  Navigator.of(context).pop(image);
+                  if (mounted) Navigator.of(context).pop(croppedFile);
                 },
               ),
               ListTile(
@@ -178,69 +165,31 @@ class _PhotoWidgetState extends State<PhotoWidget> {
     );
   }
 
-  Future<File?> _cropImage() async {
-    final scale = cropKey.currentState?.scale ?? 1;
-    final area = cropKey.currentState?.area;
-    if (area == null) {
-      // cannot crop, widget is not setup
-      return null;
-    }
-
-    // scale up to use maximum possible number of pixels
-    // this will sample image in higher resolution to make cropped image larger
-    final sample = await ImageCrop.sampleImage(
-      file: _sample!,
-      preferredSize: (2000 / scale).round(),
-    );
-
-    final file = await ImageCrop.cropImage(
-      file: sample,
-      area: area,
-    );
-
-    return _sample = file;
-  }
-
-  Widget _buildCroppingImage() {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        automaticallyImplyLeading: false,
-        leading: GestureDetector(
-            onTap: () => Navigator.pop(context),
-            child: const Icon(Icons.close_rounded)),
-        title: Text(
-          'Cortar'.toUpperCase(),
-          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w300),
+  Future<CroppedFile?> _cropImage(File image) async {
+    final croppedFile = await ImageCropper().cropImage(
+      sourcePath: image.path,
+      aspectRatioPresets: [
+        CropAspectRatioPreset.square,
+      ],
+      uiSettings: [
+        AndroidUiSettings(
+          toolbarTitle: 'Cropper',
+          toolbarWidgetColor: Colors.white,
+          initAspectRatio: CropAspectRatioPreset.original,
+          lockAspectRatio: false,
         ),
-        centerTitle: true,
-        actions: [
-          GestureDetector(
-            onTap: () async {
-              final image = await _cropImage();
-              Navigator.of(context).pop(image);
-            },
-            child: const Icon(Icons.check),
-          ),
-          const SizedBox(width: 20),
-        ],
-      ),
-      body: Container(
-        color: Colors.black,
-        child: Expanded(
-          child: Crop.file(
-            _sample!,
-            key: cropKey,
-            aspectRatio: 1.0 / 1.0,
-          ),
+        IOSUiSettings(
+          title: 'Cropper',
         ),
-      ),
+      ],
     );
+
+    return croppedFile;
   }
 
   Future<XFile?> _getFromCamera() async {
-    final _picker = ImagePicker();
-    final image = await _picker.pickImage(source: ImageSource.camera);
+    final picker = ImagePicker();
+    final image = await picker.pickImage(source: ImageSource.camera);
 
     return image;
   }
@@ -252,7 +201,7 @@ class _PhotoWidgetState extends State<PhotoWidget> {
         await imagePicker.pickImage(
           source: imageSource,
           imageQuality: 1,
-        )
+        ),
       ];
 
       if (xImages.isNotEmpty) {
@@ -268,6 +217,7 @@ class _PhotoWidgetState extends State<PhotoWidget> {
       debugPrint(ex.toString());
       return null;
     }
+    return null;
   }
 
   Future<File?> _pickFile(ImageSource? imageSource) async {
@@ -281,5 +231,6 @@ class _PhotoWidgetState extends State<PhotoWidget> {
     } catch (ex) {
       debugPrint(ex.toString());
     }
+    return null;
   }
 }

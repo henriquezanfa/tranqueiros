@@ -6,9 +6,9 @@ import 'package:tranqueiros/feature/dashboard/domain/domain.dart';
 class RoundScoreListWidget extends StatelessWidget {
   /// List with every round constructor.
   const RoundScoreListWidget({
-    Key? key,
     required this.scores,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The rounds list.
   final List<ScoreModel> scores;

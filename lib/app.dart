@@ -4,7 +4,7 @@ import 'package:tranqueiros/core/core.dart';
 /// The app.
 class TranqueirosApp extends StatelessWidget {
   /// The app constructor.
-  const TranqueirosApp({Key? key}) : super(key: key);
+  const TranqueirosApp({super.key});
 
   @override
   Widget build(BuildContext context) {

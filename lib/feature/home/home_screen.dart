@@ -4,7 +4,7 @@ import 'package:tranqueiros/core/core.dart';
 /// The home screen.
 class HomeScreen extends StatelessWidget {
   /// The home screen constructor.
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -34,9 +34,7 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _HomeHeaderWidget extends StatelessWidget {
-  const _HomeHeaderWidget({
-    Key? key,
-  }) : super(key: key);
+  const _HomeHeaderWidget();
 
   @override
   Widget build(BuildContext context) {

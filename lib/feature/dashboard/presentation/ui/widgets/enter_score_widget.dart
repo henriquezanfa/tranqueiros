@@ -6,15 +6,15 @@ import 'package:tranqueiros/core/core.dart';
 class EnterScoreWidget extends StatelessWidget {
   /// Input texts for the scores constructor.
   const EnterScoreWidget({
-    Key? key,
     required this.firstTeamController,
     required this.secondTeamController,
-  }) : super(key: key);
+    super.key,
+  });
 
   /// The first team text editing controller.
   final TextEditingController firstTeamController;
 
-  /// The secdon team text editing controller.
+  /// The second team text editing controller.
   final TextEditingController secondTeamController;
 
   @override

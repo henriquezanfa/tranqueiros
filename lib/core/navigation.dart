@@ -4,18 +4,15 @@ import 'package:tranqueiros/feature/home/home_screen.dart';
 import 'package:tranqueiros/feature/splash/splash_screen.dart';
 
 /// The routes for the app.
-Route onGenerateRoute(RouteSettings settings) {
+Route<dynamic> onGenerateRoute(RouteSettings settings) {
   Widget child = Container();
   switch (settings.name) {
     case '/':
       child = const SplashScreen();
-      break;
     case 'home':
       child = const HomeScreen();
-      break;
     case 'new-game':
       child = const DashboardScreen();
-      break;
   }
 
   if (settings.name == 'home') {

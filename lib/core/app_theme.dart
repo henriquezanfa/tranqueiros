@@ -1,3 +1,5 @@
+// ignore_for_file: public_member_api_docs
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -29,11 +31,12 @@ class TranqueirosAppTheme {
       );
 
   /// The app colors.
-  static _TranqueirosColors get colors => _TranqueirosColors();
+  static TranqueirosColors get colors => TranqueirosColors();
 }
 
-class _TranqueirosColors {
-  Color primary = const Color.fromRGBO(0x3C, 0x88, 0x11, 1);
-  Color secondary = const Color.fromRGBO(0x2A, 0x60, 0x0B, 1);
-  Color accent = const Color.fromRGBO(0x88, 0x11, 0x11, 1);
+/// The app colors.
+class TranqueirosColors {
+  final primary = const Color.fromRGBO(0x3C, 0x88, 0x11, 1);
+  final secondary = const Color.fromRGBO(0x2A, 0x60, 0x0B, 1);
+  final accent = const Color.fromRGBO(0x88, 0x11, 0x11, 1);
 }

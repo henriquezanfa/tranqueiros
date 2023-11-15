@@ -1,6 +1,6 @@
 /// The team model.
 class TeamModel {
-  /// The team model contructor
+  /// The team model constructor
 
   TeamModel({
     required this.firstPlayerName,

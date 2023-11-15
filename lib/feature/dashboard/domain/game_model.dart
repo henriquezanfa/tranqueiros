@@ -21,11 +21,11 @@ class GameModel {
   List<ScoreModel> get scores => _scores;
 
   /// Adds a new score to [_scores]
-  void newScore(int firstTeamScore, int secontScoreTeam) {
+  void newScore(int firstTeamScore, int secondScoreTeam) {
     _scores.add(
       ScoreModel(
         firstTeamScore: firstTeamScore,
-        secondTeamScore: secontScoreTeam,
+        secondTeamScore: secondScoreTeam,
       ),
     );
   }
