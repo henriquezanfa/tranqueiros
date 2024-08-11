@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:tranqueiros/core/core.dart';
 
 const double _imgSize = 70;
 
@@ -23,11 +22,11 @@ class _UserPhotosWidgetState extends State<UserPhotosWidget> {
     return Container(
       padding: const EdgeInsets.all(8),
       child: const Row(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          DuoPlayersWidget(),
+          Expanded(child: DuoPlayersWidget()),
           VersusWidget(),
-          DuoPlayersWidget(),
+          Expanded(child: DuoPlayersWidget()),
         ],
       ),
     );
@@ -59,9 +58,9 @@ class DuoPlayersWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const Row(
+      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
         PhotoWidget(),
-        SizedBox(width: 4),
         PhotoWidget(),
       ],
     );
@@ -84,46 +83,34 @@ class _PhotoWidgetState extends State<PhotoWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return GestureDetector(
-      onTap: () {
-        _showPicker(context).then((value) async {
-          if (value != null) {
-            final croppedFile = await _cropImage(File(value.path));
+        onTap: () {
+          _showPicker(context).then((value) async {
+            if (value != null) {
+              final croppedFile = await _cropImage(File(value.path));
 
-            setState(() {
-              _image = File(croppedFile!.path);
-            });
-          }
-        });
-      },
-      child: _image != null
-          ? ClipRRect(
-              borderRadius: BorderRadius.circular(_imgSize),
-              child: SizedBox(
-                width: _imgSize,
-                height: _imgSize,
-                child: Image.file(_image!, fit: BoxFit.cover),
-              ),
-            )
-          : Stack(
-              children: [
-                Icon(
-                  Icons.account_circle_rounded,
-                  size: 85,
-                  color: TranqueirosAppTheme.colors.secondary,
-                ),
-                const Positioned(
-                  top: 8,
-                  right: 8,
-                  child: Icon(
+              setState(() {
+                _image = File(croppedFile!.path);
+              });
+            }
+          });
+        },
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_imgSize),
+          child: Container(
+            color: theme.colorScheme.inversePrimary,
+            width: _imgSize,
+            height: _imgSize,
+            child: _image != null
+                ? Image.file(_image!, fit: BoxFit.cover)
+                : const Icon(
                     Icons.add_a_photo,
-                    size: 20,
+                    size: 30,
                     color: Colors.black38,
                   ),
-                ),
-              ],
-            ),
-    );
+          ),
+        ));
   }
 
   Future<File?> _showPicker(BuildContext context) async {

@@ -16,6 +16,7 @@ class RoundScoreListWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView.separated(
+      padding: EdgeInsets.zero,
       separatorBuilder: (context, position) {
         return Container(
           height: 0.5,

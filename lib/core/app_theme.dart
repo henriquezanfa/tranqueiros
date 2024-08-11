@@ -9,8 +9,11 @@ class TranqueirosAppTheme {
   static ThemeData get theme => ThemeData(
         primaryColor: colors.primary,
         textTheme: GoogleFonts.montserratTextTheme(),
-        colorScheme:
-            ColorScheme.fromSwatch().copyWith(secondary: colors.accent),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: colors.primary,
+          secondary: colors.accent,
+          inversePrimary: colors.secondary,
+        ),
         scaffoldBackgroundColor: colors.primary,
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ButtonStyle(
